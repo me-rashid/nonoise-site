@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Deletion – NoNoise AI</title>
+  <meta name="description" content="How to delete your data from NoNoise AI. All data is local or temporary — you are always in full control." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #00E5CC;
+      --primary-dim: rgba(0,229,204,0.10);
+      --primary-glow: rgba(0,229,204,0.30);
+      --primary-border: rgba(0,229,204,0.20);
+      --bg: #0D1117;
+      --surface: #161B22;
+      --surface2: #1C2230;
+      --text: #E6EDF3;
+      --muted: #7D8590;
+      --border: #21262D;
+      --mono: 'DM Mono', monospace;
+      --display: 'Syne', sans-serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,204,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,204,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 48px;
+      background: rgba(13,17,23,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 30px; height: 30px;
+      background: var(--primary);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .nav-logo-text {
+      font-family: var(--display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.86rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+
+    .page-header {
+      position: relative;
+      z-index: 1;
+      padding: 140px 24px 64px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 50%;
+      transform: translateX(-50%);
+      width: 100px; height: 2px;
+      background: var(--primary);
+    }
+
+    .page-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--primary);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .page-header h1 {
+      font-family: var(--display);
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+
+    .page-header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 480px;
+      margin: 0 auto 20px;
+    }
+
+    .date-tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 12px;
+      letter-spacing: 0.08em;
+    }
+
+    .content-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 72px 24px 100px;
+    }
+
+    .key-box {
+      background: var(--primary-dim);
+      border: 1px solid rgba(0,229,204,0.28);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 52px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .key-box .icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+    .key-box div { flex: 1; }
+
+    .key-box strong {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--primary);
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .key-box p { color: var(--text); font-size: 0.92rem; line-height: 1.65; }
+
+    /* SECTION CARD */
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .section-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      color: var(--primary);
+      background: var(--primary-dim);
+      border: 1px solid var(--primary-border);
+      border-radius: 4px;
+      padding: 3px 10px;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .section-card-header h2 {
+      font-family: var(--display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .section-card-body {
+      padding: 24px 28px;
+      color: var(--muted);
+      font-size: 0.91rem;
+      line-height: 1.8;
+    }
+
+    .section-card-body p + p { margin-top: 14px; }
+    .section-card-body strong { color: var(--text); }
+    .section-card-body a { color: var(--primary); text-decoration: none; }
+
+    /* STEPS */
+    .steps {
+      list-style: none;
+      counter-reset: steps;
+      margin-top: 16px;
+    }
+
+    .steps li {
+      counter-increment: steps;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .steps li::before {
+      content: counter(steps);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--bg);
+      background: var(--primary);
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .steps li span { color: var(--muted); font-size: 0.91rem; }
+
+    /* STEP SUBHEADER */
+    .step-sub {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--primary);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin: 20px 0 12px;
+    }
+
+    /* EMAIL CARD */
+    .email-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 36px 28px;
+      text-align: center;
+      margin-top: 52px;
+    }
+
+    .email-card h3 {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .email-card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--primary);
+      color: #0D1117;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 13px 26px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 28px var(--primary-glow);
+      transform: translateY(-2px);
+    }
+
+    .email-note {
+      display: block;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      margin-top: 14px;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 52px 0;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-brand { display: flex; align-items: center; gap: 10px; }
+    .footer-brand-icon {
+      width: 26px; height: 26px;
+      background: var(--primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+    .footer-brand-name { font-family: var(--display); font-size: 0.9rem; font-weight: 700; }
+
+    .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.84rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--primary); }
+    .footer-copy { color: var(--muted); font-size: 0.76rem; font-family: var(--mono); }
+
+    @media (max-width: 640px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .page-header { padding: 110px 20px 48px; }
+      .content-wrap { padding: 48px 20px 80px; }
+      .section-card-body, .section-card-header { padding: 18px 20px; }
+      footer { flex-direction: column; padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">〜</div>
+      <span class="nav-logo-text">NoNoise AI</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="terms.html">Terms</a></li>
+      <li><a href="deletion.html">Data Deletion</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-label">User Rights</div>
+    <h1>Data Deletion</h1>
+    <p>How to delete your data from NoNoise AI. You are always in complete control.</p>
+    <span class="date-tag">Last updated: May 2025</span>
+  </div>
+
+  <div class="content-wrap">
+
+    <div class="key-box">
+      <div class="icon">🛡</div>
+      <div>
+        <strong>KEY FACT</strong>
+        <p>NoNoise AI does not maintain a user database. Audio files uploaded for processing are temporarily stored on our server and deleted after download. All other data (processing history, preferences) lives only on your device. You can delete everything instantly, at any time.</p>
+      </div>
+    </div>
+
+    <!-- WHAT DATA EXISTS -->
+    <div class="section-card">
+      <div class="section-card-header">
+        <span class="section-num">01</span>
+        <h2>What Data NoNoise AI Stores</h2>
+      </div>
+      <div class="section-card-body">
+        <p><strong>On our server (temporary):</strong></p>
+        <p>Audio files you upload are stored temporarily in Firebase Storage (Google Cloud Storage) during and briefly after processing. They are assigned an unguessable random URL. These files are deleted once you download the result, or when you explicitly request deletion via the app.</p>
+        <p><strong>On your device (local only):</strong></p>
+        <p><strong>Processing History</strong> — File names and timestamps of files you have processed. Stored in a local SQLite database. Never uploaded.</p>
+        <p><strong>App Preferences</strong> — Subscription status, settings. Stored in SharedPreferences on your device.</p>
+        <p><strong>Downloaded Files</strong> — MP3 files you download are saved to your Music/NoNoise Ai folder on your device's local storage.</p>
+      </div>
+    </div>
+
+    <!-- DELETE IN APP -->
+    <div class="section-card">
+      <div class="section-card-header">
+        <span class="section-num">02</span>
+        <h2>Deleting Data From Inside the App</h2>
+      </div>
+      <div class="section-card-body">
+        <p class="step-sub">Delete individual processed files:</p>
+        <ol class="steps">
+          <li><span>Open the app and tap the <strong>Studio</strong> tab at the bottom.</span></li>
+          <li><span>Tap the <strong>⋮ menu</strong> on any file in your list.</span></li>
+          <li><span>Tap <strong>Delete</strong> and confirm. This removes the entry from your local history.</span></li>
+        </ol>
+
+        <p class="step-sub">Delete server-side audio files:</p>
+        <ol class="steps">
+          <li><span>In the Studio tab, tap the <strong>⋮ menu</strong> on a processed file.</span></li>
+          <li><span>Tap <strong>Delete</strong>. The app also sends a deletion request to our server, removing the file from Firebase Storage.</span></li>
+        </ol>
+
+        <p class="step-sub">Delete downloaded MP3 files from your device:</p>
+        <ol class="steps">
+          <li><span>Open your device's <strong>Files</strong> or <strong>Music</strong> app.</span></li>
+          <li><span>Navigate to <strong>Music → NoNoise Ai</strong> folder.</span></li>
+          <li><span>Select and delete any files you want to remove.</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- UNINSTALL -->
+    <div class="section-card">
+      <div class="section-card-header">
+        <span class="section-num">03</span>
+        <h2>Deleting All Data by Uninstalling</h2>
+      </div>
+      <div class="section-card-body">
+        <p>Uninstalling NoNoise AI permanently deletes all locally stored data: processing history, app preferences, and cached subscription status.</p>
+        <p>MP3 files you have already downloaded to your Music/NoNoise Ai folder are <strong>not</strong> automatically removed. Delete those manually from your Files or Music app before or after uninstalling.</p>
+        <p>Any audio currently being processed on our server at the time of uninstall will be automatically deleted once the processing job expires (within 24 hours).</p>
+        <ol class="steps" style="margin-top:16px">
+          <li><span>Long-press the NoNoise AI icon on your home screen or app drawer.</span></li>
+          <li><span>Tap <strong>Uninstall</strong> and confirm.</span></li>
+          <li><span>All local data is permanently erased.</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- CLEAR APP DATA -->
+    <div class="section-card">
+      <div class="section-card-header">
+        <span class="section-num">04</span>
+        <h2>Clearing App Data via Android Settings</h2>
+      </div>
+      <div class="section-card-body">
+        <p>You can wipe all app data without uninstalling using Android's built-in settings:</p>
+        <ol class="steps" style="margin-top:12px">
+          <li><span>Go to your device's <strong>Settings → Apps</strong>.</span></li>
+          <li><span>Find and tap <strong>NoNoise AI</strong>.</span></li>
+          <li><span>Tap <strong>Storage</strong>.</span></li>
+          <li><span>Tap <strong>Clear Data</strong>. This permanently deletes all processing history and preferences.</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SERVER DELETION REQUEST -->
+    <div class="section-card">
+      <div class="section-card-header">
+        <span class="section-num">05</span>
+        <h2>Requesting Server-Side Deletion by Email</h2>
+      </div>
+      <div class="section-card-body">
+        <p>If you believe an audio file you uploaded is still on our server and wish to request its deletion, contact us by email. Because we do not store user accounts, please include as much detail as possible (approximate upload time, file name) so we can locate and remove it.</p>
+        <p>We will confirm deletion within 48 hours of receiving your request.</p>
+        <p>Email: <a href="mailto:raashidk.official@gmail.com">raashidk.official@gmail.com</a></p>
+      </div>
+    </div>
+
+    <!-- NO ACCOUNT DATA -->
+    <div class="section-card">
+      <div class="section-card-header">
+        <span class="section-num">06</span>
+        <h2>No Account or Personal Data to Delete</h2>
+      </div>
+      <div class="section-card-body">
+        <p>NoNoise AI requires no account and collects no personal information. There is no user profile, no cloud-synced data, and no database entry associated with you personally.</p>
+        <p>The steps above cover all data that NoNoise AI stores. There is nothing else to delete.</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="email-card">
+      <h3>Need help with data deletion?</h3>
+      <p>If you have any concerns or questions about your data, contact us. We respond within 48 hours.</p>
+      <a href="mailto:raashidk.official@gmail.com?subject=NoNoise%20AI%20Data%20Deletion%20Request" class="btn-primary">
+        ✉ &nbsp;Contact Support
+      </a>
+      <span class="email-note">raashidk.official@gmail.com</span>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-brand">
+      <div class="footer-brand-icon">〜</div>
+      <span class="footer-brand-name">NoNoise AI</span>
+    </div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="privacy.html">Privacy Policy</a></li>
+      <li><a href="terms.html">Terms of Service</a></li>
+      <li><a href="deletion.html">Data Deletion</a></li>
+      <li><a href="mailto:raashidk.official@gmail.com">Contact</a></li>
+    </ul>
+    <span class="footer-copy">© 2025 NoNoise AI. All rights reserved.</span>
+  </footer>
+
+</body>
+</html>
